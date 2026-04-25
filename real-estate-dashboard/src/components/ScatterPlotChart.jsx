@@ -151,9 +151,7 @@ export default function ScatterPlotChart({ rows = [] }) {
         <>
           <div className="chart-wrap" style={{ height: "540px" }}>
             <ResponsiveContainer width="100%" height="100%">
-              <ScatterChart
-                margin={{ top: 20, right: 30, bottom: 30, left: 30 }}
-              >
+              <ScatterChart margin={{ top: 20, right: 30, bottom: 55, left: 45 }}>
                 <CartesianGrid strokeDasharray="3 3" />
 
                 <XAxis
@@ -162,9 +160,18 @@ export default function ScatterPlotChart({ rows = [] }) {
                   name="Estimated Value"
                   domain={[LOG_MIN, LOG_MAX]}
                   ticks={tickValuesLog}
-                  tickFormatter={(value) =>
-                    formatDollarShort(fromLog10(value))
-                  }
+                  tickFormatter={(value) => formatDollarShort(fromLog10(value))}
+                  label={{
+                    value: "Estimated Value ($)",
+                    position: "insideBottom",
+                    offset: -3,
+                    style: {
+                      textAnchor: "middle",
+                      fill: "#334155",
+                      fontWeight: 600,
+                      fontSize: 14,
+                    },
+                  }}
                 />
 
                 <YAxis
@@ -173,10 +180,22 @@ export default function ScatterPlotChart({ rows = [] }) {
                   name="Sale Price"
                   domain={[LOG_MIN, LOG_MAX]}
                   ticks={tickValuesLog}
-                  tickFormatter={(value) =>
-                    formatDollarShort(fromLog10(value))
-                  }
+                  tickFormatter={(value) => formatDollarShort(fromLog10(value))}
+                  width={80}
+                  label={{
+                    value: "Sale Price ($)",
+                    angle: -90,
+                    position: "insideLeft",
+                    offset: -10,
+                    style: {
+                      textAnchor: "middle",
+                      fill: "#334155",
+                      fontWeight: 600,
+                      fontSize: 14,
+                    },
+                  }}
                 />
+
 
                 <Tooltip content={<CustomTooltip />} />
                 <Legend />
