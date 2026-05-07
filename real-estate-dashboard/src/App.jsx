@@ -8,6 +8,7 @@ import MonthlyTrendChart from "./components/MonthlyTrendChart";
 import ScatterPlotChart from "./components/ScatterPlotChart";
 import ValuationBarChart from "./components/ValuationBarChart";
 import PropertyTypeBarChart from "./components/PropertyTypeBarChart";
+import LocalityMapChart from "./components/LocalityMapChart";
 
 function toNumber(value) {
   const num = Number(value);
@@ -353,6 +354,9 @@ export default function App() {
         <ValuationBarChart rows={filteredRows} />
 
         <PropertyTypeBarChart rows={filteredRows} />
+
+        <LocalityMapChart rows={filteredRows} />
+
       </div>
     </div>
   );
