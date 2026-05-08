@@ -69,7 +69,19 @@ fig.update_layout(
         "font": {"size": 24},
     },
     margin=dict(l=140, r=80, t=110, b=160),
-    coloraxis_colorbar={"title": "Correlation"},
+    coloraxis_colorbar={
+        "title": {
+            "text": "Correlation<br><sup>Blue = positive<br>Red = negative</sup>"
+        },
+        "tickvals": [-1, -0.5, 0, 0.5, 1],
+        "ticktext": [
+            "-1 Strong Negative",
+            "-0.5 Negative",
+            "0 No Relationship",
+            "0.5 Positive",
+            "1 Strong Positive"
+        ]
+    },
     font=dict(size=15),
 )
 

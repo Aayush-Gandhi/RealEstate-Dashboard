@@ -9,6 +9,9 @@ import ScatterPlotChart from "./components/ScatterPlotChart";
 import ValuationBarChart from "./components/ValuationBarChart";
 import PropertyTypeBarChart from "./components/PropertyTypeBarChart";
 import LocalityMapChart from "./components/LocalityMapChart";
+import CorrelationHeatmap from "./components/CorrelationHeatmap";
+
+
 
 function toNumber(value) {
   const num = Number(value);
@@ -356,6 +359,8 @@ export default function App() {
         <PropertyTypeBarChart rows={filteredRows} />
 
         <LocalityMapChart rows={filteredRows} />
+
+        <CorrelationHeatmap rows={filteredRows} />
 
       </div>
     </div>
