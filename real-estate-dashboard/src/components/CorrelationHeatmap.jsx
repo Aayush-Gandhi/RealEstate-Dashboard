@@ -140,6 +140,9 @@ export default function CorrelationHeatmap({ rows = [] }) {
       ) : (
         <>
           <div className="heatmap-layout">
+            <p className="heatmap-axis-note">
+              Columns and rows show the same variables; each cell shows the correlation between the row variable and column variable.
+            </p>
             <div className="heatmap-table">
               <div className="heatmap-corner" />
 
@@ -164,9 +167,8 @@ export default function CorrelationHeatmap({ rows = [] }) {
                           backgroundColor: getHeatColor(value),
                           color: getTextColor(value),
                         }}
-                        title={`${rowVariable.label} vs ${
-                          colVariable.label
-                        }: ${value.toFixed(2)}`}
+                        title={`${rowVariable.label} vs ${colVariable.label
+                          }: ${value.toFixed(2)}`}
                       >
                         {value.toFixed(2)}
                       </div>

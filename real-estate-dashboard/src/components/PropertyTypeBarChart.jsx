@@ -168,6 +168,12 @@ export default function PropertyTypeBarChart({ rows }) {
           </ResponsiveContainer>
         </div>
       )}
+      <div className="insight-box">
+        <strong>Insight:</strong> Average overvaluation remains above 40% across all
+        bedroom groups, suggesting that pricing differences are not limited to one
+        property size category.
+      </div>
     </div>
+
   );
 }

@@ -78,7 +78,7 @@ export default function ScatterPlotChart({ rows = [] }) {
         yLog: toLog10(row.sale),
       }));
 
-    const sampleSize = Math.min(1000, valid.length);
+    const sampleSize = Math.min(700, valid.length);
     const shuffled = [...valid].sort(() => 0.5 - Math.random());
 
     return shuffled.slice(0, sampleSize);

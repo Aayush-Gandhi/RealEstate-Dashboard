@@ -42,6 +42,14 @@ export default function MethodologyNote() {
         Data is pre-cleaned before upload. KPIs and charts update dynamically
         when filters are changed.
       </div>
+
+      <div className="method-note">
+        Note: Prices are shown in nominal dollars and are not adjusted for inflation
+  across years 2009–2022. The dashboard primarily focuses on relative pricing
+  differences between sale price and estimated value rather than long-term
+  inflation-adjusted market appreciation.
+
+      </div>
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import Papa from "papaparse";
+
 import FileUpload from "./components/FileUpload";
 import MethodologyNote from "./components/MethodologyNote";
 import KPISection from "./components/KPISection";
@@ -10,8 +11,7 @@ import ValuationBarChart from "./components/ValuationBarChart";
 import PropertyTypeBarChart from "./components/PropertyTypeBarChart";
 import LocalityMapChart from "./components/LocalityMapChart";
 import CorrelationHeatmap from "./components/CorrelationHeatmap";
-
-
+import TransactionVolumeChart from "./components/TransactionVolumeChart";
 
 function toNumber(value) {
   const num = Number(value);
@@ -38,12 +38,15 @@ export default function App() {
   const [selectedValuation, setSelectedValuation] = useState("All");
   const [selectedLocality, setSelectedLocality] = useState("All");
 
+  const [showAdvancedCharts, setShowAdvancedCharts] = useState(false);
+
   const handleFileUpload = (event) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
     setFileName(file.name);
     setError("");
+    setShowAdvancedCharts(false);
 
     Papa.parse(file, {
       header: true,
@@ -57,12 +60,17 @@ export default function App() {
             price_diff: toNumber(row.price_diff),
             pct_diff: toNumber(row.pct_diff),
             num_rooms: toNumber(row.num_rooms),
-            num_bedrooms: toNumber(row.num_bedrooms || row.bedrooms || row.num_rooms),
+            num_bedrooms: toNumber(
+              row.num_bedrooms || row.bedrooms || row.num_rooms
+            ),
             num_bathrooms: toNumber(row.num_bathrooms),
             carpet_area: toNumber(row.carpet_area),
+            property_tax_rate: toNumber(row.property_tax_rate),
             property: normalizeText(row.property),
             valuation_status: normalizeText(row.valuation_status),
             locality: normalizeText(row.locality),
+            year_month: normalizeText(row.year_month),
+            date: normalizeText(row.date),
           }));
 
           setRows(cleaned);
@@ -144,7 +152,8 @@ export default function App() {
       filteredRows.reduce((sum, row) => sum + row.sale_price, 0) / totalRows;
 
     const avgEstimatedValue =
-      filteredRows.reduce((sum, row) => sum + row.estimated_value, 0) / totalRows;
+      filteredRows.reduce((sum, row) => sum + row.estimated_value, 0) /
+      totalRows;
 
     const avgPctDiff =
       filteredRows.reduce((sum, row) => sum + Number(row.pct_diff || 0), 0) /
@@ -228,6 +237,26 @@ export default function App() {
         smooth_estimate: smoothEstimate,
       };
     });
+  }, [filteredRows]);
+
+  const scatterRows = useMemo(() => {
+    if (!filteredRows.length) return [];
+
+    return filteredRows
+      .filter((row) => {
+        const sale = Number(row.sale_price);
+        const estimated = Number(row.estimated_value);
+
+        return (
+          Number.isFinite(sale) &&
+          Number.isFinite(estimated) &&
+          sale >= 100000 &&
+          sale <= 2000000 &&
+          estimated >= 100000 &&
+          estimated <= 2000000
+        );
+      })
+      .slice(0, 700);
   }, [filteredRows]);
 
   return (
@@ -319,6 +348,7 @@ export default function App() {
                   setSelectedBedrooms("All");
                   setSelectedValuation("All");
                   setSelectedLocality("All");
+                  setShowAdvancedCharts(false);
                 }}
                 className="filter-reset"
               >
@@ -352,16 +382,29 @@ export default function App() {
 
         <MonthlyTrendChart rows={filteredRows} data={monthlyTrendData} />
 
-        <ScatterPlotChart rows={filteredRows} />
+        <TransactionVolumeChart rows={filteredRows} />
+
+        <ScatterPlotChart rows={scatterRows} />
 
         <ValuationBarChart rows={filteredRows} />
 
         <PropertyTypeBarChart rows={filteredRows} />
 
-        <LocalityMapChart rows={filteredRows} />
-
-        <CorrelationHeatmap rows={filteredRows} />
-
+        <div className="advanced-chart-loader">
+          {!showAdvancedCharts ? (
+            <button
+              className="load-advanced-btn"
+              onClick={() => setShowAdvancedCharts(true)}
+            >
+              Load Advanced Analytics
+            </button>
+          ) : (
+            <>
+              <LocalityMapChart rows={filteredRows} />
+              <CorrelationHeatmap rows={filteredRows} />
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
